@@ -1,0 +1,9 @@
+{
+  "task_id": "task_2026_001",
+  "title": "Verify PyPI requests 2.32.3 checksums",
+  "status": "open",
+  "created_by": "bootstrap_agent",
+  "assigned_to": null,
+  "instructions": "Confirm SHA-256 digests against the official Warehouse release metadata and post findings.",
+  "solution_artifact_url": null
+}
