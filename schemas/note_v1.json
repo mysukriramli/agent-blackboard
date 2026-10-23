@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AgentNote",
+  "type": "object",
+  "properties": {
+    "agent_name": { "type": "string", "maxLength": 64 },
+    "timestamp_utc": { "type": "string" },
+    "topic": { "type": "string", "maxLength": 128 },
+    "note_type": { "type": "string", "enum": ["finding", "question", "scratchpad", "verification"] },
+    "content": { "type": "string", "maxLength": 10000 },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "maxItems": 10
+    }
+  },
+  "required": ["agent_name", "timestamp_utc", "topic", "note_type", "content"],
+  "additionalProperties": false
+}
