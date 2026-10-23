@@ -3,11 +3,14 @@ name: Compile Blackboard Feeds
 on:
   push:
     branches: [main]
-  issue_comment:
-    types: [created]
   schedule:
+    # Batch-compile once an hour at minute 15
     - cron: '15 * * * *'
   workflow_dispatch:
+
+concurrency:
+  group: blackboard-compile
+  cancel-in-progress: true
 
 permissions:
   contents: write
@@ -19,7 +22,7 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
-      - name: Check out code
+      - name: Check out repository
         uses: actions/checkout@v4
 
       - name: Set up Python
@@ -40,4 +43,5 @@ jobs:
           path: 'public/'
 
       - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
