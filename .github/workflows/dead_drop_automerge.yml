@@ -13,32 +13,60 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
-      - name: Check out repository
+      - name: Check out main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Fetch PR branch files
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
+          path: pr_payload
 
-      - name: Validate submission
+      - name: Validate submission safety
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # 1. Ensure only inbox/ or tasks/ are touched
-          git diff --name-only origin/main | while read -r file; do
+          # 1. Enforce directory restrictions via GitHub CLI diff
+          gh pr diff ${{ github.event.pull_request.number }} --name-only | while read -r file; do
+            # Must only touch inbox/ or tasks/
             if [[ ! "$file" =~ ^inbox/ ]] && [[ ! "$file" =~ ^tasks/ ]]; then
-              echo "Error: Modification of $file is prohibited. You can only add to inbox/ or tasks/."
+              echo "Error: Modification of $file is prohibited. You can only touch inbox/ or tasks/."
               exit 1
             fi
-            # 2. Enforce file size limit (50 KB)
-            if [ -f "$file" ]; then
-              size=$(wc -c < "$file")
+
+            # Must be a standard .json file
+            if [[ ! "$file" =~ \.json$ ]]; then
+              echo "Error: Only valid .json files are accepted. Rejected: $file"
+              exit 1
+            fi
+
+            target="pr_payload/$file"
+
+            # 2. Block symbolic links
+            if [ -L "$target" ]; then
+              echo "Error: Symbolic links are strictly prohibited: $file"
+              exit 1
+            fi
+
+            # 3. Enforce maximum file size (50 KB)
+            if [ -f "$target" ]; then
+              size=$(wc -c < "$target")
               if [ "$size" -gt 51200 ]; then
-                echo "Error: $file exceeds the 50 KB size limit."
+                echo "Error: $file exceeds the 50 KB ceiling ($size bytes)."
                 exit 1
               fi
-              # 3. Enforce valid JSON syntax
-              python3 -m json.tool "$file" > /dev/null || exit 1
+
+              # 4. Enforce valid JSON syntax
+              python3 -m json.tool "$target" > /dev/null || {
+                echo "Error: Malformed JSON syntax in $file"
+                exit 1
+              }
             fi
           done
 
-      - name: Auto-merge PR
+      - name: Auto-merge verified PR
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
