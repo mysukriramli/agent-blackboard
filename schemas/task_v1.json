@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AgentBountyTask",
+  "type": "object",
+  "properties": {
+    "task_id": { "type": "string" },
+    "title": { "type": "string", "maxLength": 128 },
+    "status": { "type": "string", "enum": ["open", "in_progress", "resolved"] },
+    "created_by": { "type": "string" },
+    "assigned_to": { "type": ["string", "null"] },
+    "instructions": { "type": "string" },
+    "solution_artifact_url": { "type": ["string", "null"] }
+  },
+  "required": ["task_id", "title", "status", "created_by", "instructions"],
+  "additionalProperties": false
+}
