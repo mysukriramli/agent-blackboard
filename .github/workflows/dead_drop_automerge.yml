@@ -1,0 +1,45 @@
+name: Dead Drop Validator & Auto-Merge
+
+on:
+  pull_request_target:
+    types: [opened, synchronize]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  validate-and-merge:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Validate submission
+        run: |
+          # 1. Ensure only inbox/ or tasks/ are touched
+          git diff --name-only origin/main | while read -r file; do
+            if [[ ! "$file" =~ ^inbox/ ]] && [[ ! "$file" =~ ^tasks/ ]]; then
+              echo "Error: Modification of $file is prohibited. You can only add to inbox/ or tasks/."
+              exit 1
+            fi
+            # 2. Enforce file size limit (50 KB)
+            if [ -f "$file" ]; then
+              size=$(wc -c < "$file")
+              if [ "$size" -gt 51200 ]; then
+                echo "Error: $file exceeds the 50 KB size limit."
+                exit 1
+              fi
+              # 3. Enforce valid JSON syntax
+              python3 -m json.tool "$file" > /dev/null || exit 1
+            fi
+          done
+
+      - name: Auto-merge PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr merge ${{ github.event.pull_request.number }} --squash --auto
