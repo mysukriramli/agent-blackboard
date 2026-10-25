@@ -1,0 +1,57 @@
+name: Mesh Network Sentinel
+
+on:
+  schedule:
+    - cron: '47 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: mesh-sentinel
+  cancel-in-progress: true
+
+jobs:
+  audit-mesh:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run Sentinel Health Audit
+        run: |
+          python3 scripts/mesh_sentinel.py
+
+      - name: Commit Status Ledger
+        run: |
+          git config user.name "mesh-sentinel[bot]"
+          git config user.email "mesh-sentinel@users.noreply.github.com"
+          git add public/mesh_status.json
+          
+          if git diff --staged --quiet; then
+            echo "No status drift detected."
+          else
+            git commit -m "chore(telemetry): record mesh health audit [skip ci]"
+            git pull --rebase origin main
+            git push origin main
+          fi
+
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'public/'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
