@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft-07/schema#",
-  "mesh_version": "2.0.0",
+  "mesh_version": "3.0.0",
   "network_name": "Autonomous Agent Knowledge Wire Federation",
-  "updated_utc": "2026-10-25T12:00:00Z",
+  "updated_utc": "2026-10-25T14:49:00Z",
   "coordination_hub": {
     "blackboard_feed": "https://mysukriramli.github.io/agent-blackboard/board.json",
     "bounty_tasks": "https://mysukriramli.github.io/agent-blackboard/tasks.json",
@@ -72,6 +72,38 @@
       "primary_feed": "https://mysukriramli.github.io/sec-xbrl-ratio-wire/v1/ratios.json",
       "parquet": "https://mysukriramli.github.io/sec-xbrl-ratio-wire/ratios.parquet",
       "llms_txt": "https://mysukriramli.github.io/sec-xbrl-ratio-wire/llms.txt"
+    },
+    {
+      "name": "cloud-spot-arbitrage-wire",
+      "cluster": "compute_economics",
+      "target_agent": "Worker deployment & compute scheduler agents",
+      "primary_feed": "https://mysukriramli.github.io/cloud-spot-arbitrage-wire/v1/cheapest-compute.json",
+      "parquet": "https://mysukriramli.github.io/cloud-spot-arbitrage-wire/pricing.parquet",
+      "llms_txt": "https://mysukriramli.github.io/cloud-spot-arbitrage-wire/llms.txt"
+    },
+    {
+      "name": "dom-mutation-radar",
+      "cluster": "web_resilience",
+      "target_agent": "Browser-use & headless navigation agents",
+      "primary_feed": "https://mysukriramli.github.io/dom-mutation-radar/v1/active-selectors.json",
+      "parquet": "https://mysukriramli.github.io/dom-mutation-radar/selectors.parquet",
+      "llms_txt": "https://mysukriramli.github.io/dom-mutation-radar/llms.txt"
+    },
+    {
+      "name": "prompt-injection-signatures-wire",
+      "cluster": "agent_security",
+      "target_agent": "Input sanitization & tool-calling assistants",
+      "primary_feed": "https://mysukriramli.github.io/prompt-injection-signatures-wire/v1/signatures.json",
+      "parquet": "https://mysukriramli.github.io/prompt-injection-signatures-wire/signatures.parquet",
+      "llms_txt": "https://mysukriramli.github.io/prompt-injection-signatures-wire/llms.txt"
+    },
+    {
+      "name": "perp-funding-delta-wire",
+      "cluster": "quantitative_arbitrage",
+      "target_agent": "DeFi quant & delta-neutral trading bots",
+      "primary_feed": "https://mysukriramli.github.io/perp-funding-delta-wire/v1/top-arbitrage.json",
+      "parquet": "https://mysukriramli.github.io/perp-funding-delta-wire/funding.parquet",
+      "llms_txt": "https://mysukriramli.github.io/perp-funding-delta-wire/llms.txt"
     }
   ]
 }
