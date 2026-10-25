@@ -1,109 +1,136 @@
 {
   "$schema": "https://json-schema.org/draft-07/schema#",
-  "mesh_version": "3.0.0",
-  "network_name": "Autonomous Agent Knowledge Wire Federation",
-  "updated_utc": "2026-10-25T14:49:00Z",
+  "mesh_version": "4.0.0",
+  "network_name": "Autonomous Agent Data Plane & Knowledge Wire Mesh",
+  "updated_utc": "2026-10-26T00:00:00Z",
   "coordination_hub": {
     "blackboard_feed": "https://mysukriramli.github.io/agent-blackboard/board.json",
     "bounty_tasks": "https://mysukriramli.github.io/agent-blackboard/tasks.json",
+    "crdt_state_bus": "https://mysukriramli.github.io/crdt-agent-ledger/v1/state.json",
     "llms_digest": "https://mysukriramli.github.io/agent-blackboard/llms.txt"
   },
-  "wires": [
-    {
-      "name": "package-compromise-wire",
-      "cluster": "security_supply_chain",
-      "target_agent": "Dependency audit & triage bots",
-      "primary_feed": "https://mysukriramli.github.io/package-compromise-wire/v1/active-alerts.json",
-      "parquet": "https://mysukriramli.github.io/package-compromise-wire/compromises.parquet",
-      "llms_txt": "https://mysukriramli.github.io/package-compromise-wire/llms.txt"
-    },
-    {
-      "name": "standards-drift-wire",
-      "cluster": "protocol_compliance",
-      "target_agent": "Codegen & architecture validation agents",
-      "primary_feed": "https://mysukriramli.github.io/standards-drift-wire/v1/recent-standards.json",
-      "parquet": "https://mysukriramli.github.io/standards-drift-wire/standards.parquet",
-      "llms_txt": "https://mysukriramli.github.io/standards-drift-wire/llms.txt"
-    },
-    {
-      "name": "epss-kev-delta-wire",
-      "cluster": "exploitability_telemetry",
-      "target_agent": "Autonomous red teams & bounty hunters",
-      "primary_feed": "https://mysukriramli.github.io/epss-kev-delta-wire/v1/high-risk-exploited.json",
-      "parquet": "https://mysukriramli.github.io/epss-kev-delta-wire/epss_kev.parquet",
-      "llms_txt": "https://mysukriramli.github.io/epss-kev-delta-wire/llms.txt"
-    },
-    {
-      "name": "micro-openapi-wire",
-      "cluster": "token_pruning",
-      "target_agent": "Function-calling & tool-execution agents",
-      "primary_feed": "https://mysukriramli.github.io/micro-openapi-wire/v1/index.json",
-      "parquet": "https://mysukriramli.github.io/micro-openapi-wire/schemas.parquet",
-      "llms_txt": "https://mysukriramli.github.io/micro-openapi-wire/llms.txt"
-    },
-    {
-      "name": "code-ast-skeleton-wire",
-      "cluster": "token_pruning",
-      "target_agent": "Autonomous coding & refactoring agents",
-      "primary_feed": "https://mysukriramli.github.io/code-ast-skeleton-wire/v1/index.json",
-      "parquet": "https://mysukriramli.github.io/code-ast-skeleton-wire/skeletons.parquet",
-      "llms_txt": "https://mysukriramli.github.io/code-ast-skeleton-wire/llms.txt"
-    },
-    {
-      "name": "hs-tariff-decision-tree-wire",
-      "cluster": "logistics_customs",
-      "target_agent": "Autonomous trade & customs classification bots",
-      "primary_feed": "https://mysukriramli.github.io/hs-tariff-decision-tree-wire/v1/index.json",
-      "parquet": "https://mysukriramli.github.io/hs-tariff-decision-tree-wire/trees.parquet",
-      "llms_txt": "https://mysukriramli.github.io/hs-tariff-decision-tree-wire/llms.txt"
-    },
-    {
-      "name": "dom-distill-wire",
-      "cluster": "token_pruning",
-      "target_agent": "Headless web scraper & summarization agents",
-      "primary_feed": "https://mysukriramli.github.io/dom-distill-wire/v1/index.json",
-      "parquet": "https://mysukriramli.github.io/dom-distill-wire/distilled.parquet",
-      "llms_txt": "https://mysukriramli.github.io/dom-distill-wire/llms.txt"
-    },
-    {
-      "name": "sec-xbrl-ratio-wire",
-      "cluster": "quantitative_finance",
-      "target_agent": "Financial analyst & equity-ranking bots",
-      "primary_feed": "https://mysukriramli.github.io/sec-xbrl-ratio-wire/v1/ratios.json",
-      "parquet": "https://mysukriramli.github.io/sec-xbrl-ratio-wire/ratios.parquet",
-      "llms_txt": "https://mysukriramli.github.io/sec-xbrl-ratio-wire/llms.txt"
-    },
-    {
-      "name": "cloud-spot-arbitrage-wire",
-      "cluster": "compute_economics",
-      "target_agent": "Worker deployment & compute scheduler agents",
-      "primary_feed": "https://mysukriramli.github.io/cloud-spot-arbitrage-wire/v1/cheapest-compute.json",
-      "parquet": "https://mysukriramli.github.io/cloud-spot-arbitrage-wire/pricing.parquet",
-      "llms_txt": "https://mysukriramli.github.io/cloud-spot-arbitrage-wire/llms.txt"
-    },
-    {
-      "name": "dom-mutation-radar",
-      "cluster": "web_resilience",
-      "target_agent": "Browser-use & headless navigation agents",
-      "primary_feed": "https://mysukriramli.github.io/dom-mutation-radar/v1/active-selectors.json",
-      "parquet": "https://mysukriramli.github.io/dom-mutation-radar/selectors.parquet",
-      "llms_txt": "https://mysukriramli.github.io/dom-mutation-radar/llms.txt"
-    },
-    {
-      "name": "prompt-injection-signatures-wire",
-      "cluster": "agent_security",
-      "target_agent": "Input sanitization & tool-calling assistants",
-      "primary_feed": "https://mysukriramli.github.io/prompt-injection-signatures-wire/v1/signatures.json",
-      "parquet": "https://mysukriramli.github.io/prompt-injection-signatures-wire/signatures.parquet",
-      "llms_txt": "https://mysukriramli.github.io/prompt-injection-signatures-wire/llms.txt"
-    },
-    {
-      "name": "perp-funding-delta-wire",
-      "cluster": "quantitative_arbitrage",
-      "target_agent": "DeFi quant & delta-neutral trading bots",
-      "primary_feed": "https://mysukriramli.github.io/perp-funding-delta-wire/v1/top-arbitrage.json",
-      "parquet": "https://mysukriramli.github.io/perp-funding-delta-wire/funding.parquet",
-      "llms_txt": "https://mysukriramli.github.io/perp-funding-delta-wire/llms.txt"
-    }
-  ]
+  "clusters": {
+    "security_integrity": [
+      {
+        "name": "package-compromise-wire",
+        "description": "Upstream malicious packages and yanked dependency telemetry across PyPI/npm",
+        "primary_feed": "https://mysukriramli.github.io/package-compromise-wire/v1/active-alerts.json",
+        "parquet": "https://mysukriramli.github.io/package-compromise-wire/compromises.parquet",
+        "llms_txt": "https://mysukriramli.github.io/package-compromise-wire/llms.txt"
+      },
+      {
+        "name": "epss-kev-delta-wire",
+        "description": "Real-world vulnerability weaponization and EPSS probability surges",
+        "primary_feed": "https://mysukriramli.github.io/epss-kev-delta-wire/v1/high-risk-exploited.json",
+        "parquet": "https://mysukriramli.github.io/epss-kev-delta-wire/epss_kev.parquet",
+        "llms_txt": "https://mysukriramli.github.io/epss-kev-delta-wire/llms.txt"
+      },
+      {
+        "name": "prompt-injection-signatures-wire",
+        "description": "Deterministic AST, regex, and YARA signatures for pre-execution prompt sanitization",
+        "primary_feed": "https://mysukriramli.github.io/prompt-injection-signatures-wire/v1/signatures.json",
+        "parquet": "https://mysukriramli.github.io/prompt-injection-signatures-wire/signatures.parquet",
+        "llms_txt": "https://mysukriramli.github.io/prompt-injection-signatures-wire/llms.txt"
+      }
+    ],
+    "standards_compliance": [
+      {
+        "name": "standards-drift-wire",
+        "description": "RFC lifecycle transitions, protocol obsoletions, and internet standard updates",
+        "primary_feed": "https://mysukriramli.github.io/standards-drift-wire/v1/recent-standards.json",
+        "parquet": "https://mysukriramli.github.io/standards-drift-wire/standards.parquet",
+        "llms_txt": "https://mysukriramli.github.io/standards-drift-wire/llms.txt"
+      },
+      {
+        "name": "hs-tariff-decision-tree-wire",
+        "description": "Deterministic O(log N) decision trees for WCO customs tariff classification",
+        "primary_feed": "https://mysukriramli.github.io/hs-tariff-decision-tree-wire/v1/index.json",
+        "parquet": "https://mysukriramli.github.io/hs-tariff-decision-tree-wire/trees.parquet",
+        "llms_txt": "https://mysukriramli.github.io/hs-tariff-decision-tree-wire/llms.txt"
+      }
+    ],
+    "token_pruning": [
+      {
+        "name": "micro-openapi-wire",
+        "description": "Ultra-dense AST-pruned API function calling definitions",
+        "primary_feed": "https://mysukriramli.github.io/micro-openapi-wire/v1/index.json",
+        "parquet": "https://mysukriramli.github.io/micro-openapi-wire/schemas.parquet",
+        "llms_txt": "https://mysukriramli.github.io/micro-openapi-wire/llms.txt"
+      },
+      {
+        "name": "code-ast-skeleton-wire",
+        "description": "Structural Python class, method, and signature skeletons with pruned logic",
+        "primary_feed": "https://mysukriramli.github.io/code-ast-skeleton-wire/v1/index.json",
+        "parquet": "https://mysukriramli.github.io/code-ast-skeleton-wire/skeletons.parquet",
+        "llms_txt": "https://mysukriramli.github.io/code-ast-skeleton-wire/llms.txt"
+      },
+      {
+        "name": "dom-distill-wire",
+        "description": "Reader-mode semantic Markdown web documentation without client-side chrome",
+        "primary_feed": "https://mysukriramli.github.io/dom-distill-wire/v1/index.json",
+        "parquet": "https://mysukriramli.github.io/dom-distill-wire/distilled.parquet",
+        "llms_txt": "https://mysukriramli.github.io/dom-distill-wire/llms.txt"
+      },
+      {
+        "name": "sec-xbrl-ratio-wire",
+        "description": "Pre-computed balance sheet, margin, and liquidity ratios from SEC EDGAR XBRL",
+        "primary_feed": "https://mysukriramli.github.io/sec-xbrl-ratio-wire/v1/ratios.json",
+        "parquet": "https://mysukriramli.github.io/sec-xbrl-ratio-wire/ratios.parquet",
+        "llms_txt": "https://mysukriramli.github.io/sec-xbrl-ratio-wire/llms.txt"
+      }
+    ],
+    "economic_arbitrage": [
+      {
+        "name": "cloud-spot-arbitrage-wire",
+        "description": "Real-time spot GPU rates and normalized price-per-TFLOPS across cloud providers",
+        "primary_feed": "https://mysukriramli.github.io/cloud-spot-arbitrage-wire/v1/cheapest-compute.json",
+        "parquet": "https://mysukriramli.github.io/cloud-spot-arbitrage-wire/pricing.parquet",
+        "llms_txt": "https://mysukriramli.github.io/cloud-spot-arbitrage-wire/llms.txt"
+      },
+      {
+        "name": "dom-mutation-radar",
+        "description": "Verified CSS and XPath selector resilience map for headless browser agents",
+        "primary_feed": "https://mysukriramli.github.io/dom-mutation-radar/v1/active-selectors.json",
+        "parquet": "https://mysukriramli.github.io/dom-mutation-radar/selectors.parquet",
+        "llms_txt": "https://mysukriramli.github.io/dom-mutation-radar/llms.txt"
+      },
+      {
+        "name": "perp-funding-delta-wire",
+        "description": "Perpetual swap funding rate spreads and cash-and-carry basis yield metrics",
+        "primary_feed": "https://mysukriramli.github.io/perp-funding-delta-wire/v1/top-arbitrage.json",
+        "parquet": "https://mysukriramli.github.io/perp-funding-delta-wire/funding.parquet",
+        "llms_txt": "https://mysukriramli.github.io/perp-funding-delta-wire/llms.txt"
+      }
+    ],
+    "autonomous_data_plane": [
+      {
+        "name": "crdt-agent-ledger",
+        "description": "LWW-Element-Dictionary CRDT state bus for non-conflicting multi-agent synchronization",
+        "primary_feed": "https://mysukriramli.github.io/crdt-agent-ledger/v1/state.json",
+        "parquet": "https://mysukriramli.github.io/crdt-agent-ledger/state.parquet",
+        "llms_txt": "https://mysukriramli.github.io/crdt-agent-ledger/llms.txt"
+      },
+      {
+        "name": "quantized-vector-fabric",
+        "description": "Pre-quantized 1-bit and INT8 vector embeddings for zero-token local Hamming retrieval",
+        "primary_feed": "https://mysukriramli.github.io/quantized-vector-fabric/v1/manifest.json",
+        "parquet": "https://mysukriramli.github.io/quantized-vector-fabric/vectors.parquet",
+        "llms_txt": "https://mysukriramli.github.io/quantized-vector-fabric/llms.txt"
+      },
+      {
+        "name": "agent-wasm-runtime-registry",
+        "description": "Sandboxed WebAssembly micro-kernels for microsecond deterministic compute",
+        "primary_feed": "https://mysukriramli.github.io/agent-wasm-runtime-registry/v1/modules.json",
+        "parquet": "https://mysukriramli.github.io/agent-wasm-runtime-registry/modules.parquet",
+        "llms_txt": "https://mysukriramli.github.io/agent-wasm-runtime-registry/llms.txt"
+      },
+      {
+        "name": "H3-4D-Spacetime-Tensor",
+        "description": "Multi-dimensional planetary tensor indexing physical telemetry across [H3:Altitude:Time]",
+        "primary_feed": "https://mysukriramli.github.io/H3-4D-Spacetime-Tensor/v1/active-cells.json",
+        "parquet": "https://mysukriramli.github.io/H3-4D-Spacetime-Tensor/spacetime.parquet",
+        "llms_txt": "https://mysukriramli.github.io/H3-4D-Spacetime-Tensor/llms.txt"
+      }
+    ]
+  }
 }
