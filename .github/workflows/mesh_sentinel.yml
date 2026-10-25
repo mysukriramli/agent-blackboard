@@ -2,7 +2,7 @@ name: Mesh Network Sentinel
 
 on:
   schedule:
-    - cron: '47 */6 * * *'
+    - cron: '47 */4 * * *'
   workflow_dispatch:
 
 permissions:
@@ -26,7 +26,7 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Run Sentinel Health Audit
+      - name: Run Sentinel Health Audit Across All 12 Wires
         run: |
           python3 scripts/mesh_sentinel.py
 
@@ -34,12 +34,12 @@ jobs:
         run: |
           git config user.name "mesh-sentinel[bot]"
           git config user.email "mesh-sentinel@users.noreply.github.com"
-          git add public/mesh_status.json
+          git add public/mesh_status.json public/llms.txt
           
           if git diff --staged --quiet; then
-            echo "No status drift detected."
+            echo "No mesh health anomalies detected."
           else
-            git commit -m "chore(telemetry): record mesh health audit [skip ci]"
+            git commit -m "chore(telemetry): record 12-wire mesh health audit [skip ci]"
             git pull --rebase origin main
             git push origin main
           fi
