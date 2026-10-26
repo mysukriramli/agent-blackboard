@@ -5,7 +5,10 @@ import time
 import urllib.request
 from datetime import datetime, timezone
 
-MESH_CONFIG = "agent-mesh.json"
+POSSIBLE_CONFIG_PATHS = [
+    "agent-mesh.json",
+    "public/agent-mesh.json"
+]
 OUTPUT_DIR = "public"
 STATUS_FILE = os.path.join(OUTPUT_DIR, "mesh_status.json")
 
@@ -13,7 +16,7 @@ def check_endpoint(url: str, timeout: int = 10) -> dict:
     start = time.perf_counter()
     req = urllib.request.Request(
         url,
-        headers={"User-Agent": "AgentMeshSentinel/2.0 (Automated Network Health Check)"}
+        headers={"User-Agent": "AgentMeshSentinel/4.0 (Autonomous Health Auditor)"}
     )
     try:
         with urllib.request.urlopen(req, timeout=timeout) as resp:
@@ -38,66 +41,63 @@ def run():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     now_iso = datetime.now(timezone.utc).isoformat()
 
-    if not os.path.exists(MESH_CONFIG):
-        print(f"Config {MESH_CONFIG} not found.")
-        return
+    config_path = None
+    for p in POSSIBLE_CONFIG_PATHS:
+        if os.path.exists(p):
+            config_path = p
+            break
 
-    with open(MESH_CONFIG, "r", encoding="utf-8") as f:
-        config = json.load(f)
+    config = {}
+    if config_path:
+        with open(config_path, "r", encoding="utf-8") as f:
+            try:
+                config = json.load(f)
+            except Exception as e:
+                print(f"Warning: Failed to parse {config_path}: {e}")
+    else:
+        print("Warning: agent-mesh.json not found in root or public/. Generating baseline status.")
+
+    flat_wires = []
+    clusters = config.get("clusters", {})
+    if isinstance(clusters, dict) and clusters:
+        for cluster_name, wire_list in clusters.items():
+            for w in wire_list:
+                w["cluster"] = cluster_name
+                flat_wires.append(w)
+    elif "wires" in config:
+        flat_wires = config.get("wires", [])
 
     health_report = {
-        "network": config.get("network_name"),
+        "network": config.get("network_name", "Autonomous Agent Mesh"),
         "audited_at_utc": now_iso,
-        "total_wires": len(config.get("wires", [])),
+        "total_wires": len(flat_wires),
         "results": []
     }
 
     healthy_count = 0
-
-    for wire in config.get("wires", []):
-        feed_url = wire["primary_feed"]
+    for wire in flat_wires:
+        feed_url = wire.get("primary_feed") or wire.get("feed")
+        if not feed_url:
+            continue
         check = check_endpoint(feed_url)
         if check["status"] == "HEALTHY":
             healthy_count += 1
 
         health_report["results"].append({
-            "name": wire["name"],
-            "cluster": wire["cluster"],
-            "target_agent": wire["target_agent"],
+            "name": wire.get("name"),
+            "cluster": wire.get("cluster", "general"),
             "primary_feed": feed_url,
             "health": check
         })
 
     health_report["summary"] = {
         "healthy_wires": healthy_count,
-        "unhealthy_wires": len(config.get("wires", [])) - healthy_count,
-        "availability_pct": round((healthy_count / len(config.get("wires", []))) * 100, 1) if config.get("wires") else 0
+        "unhealthy_wires": len(flat_wires) - healthy_count,
+        "availability_pct": round((healthy_count / len(flat_wires)) * 100, 1) if flat_wires else 0.0
     }
 
-    # Write JSON health artifact
     with open(STATUS_FILE, "w", encoding="utf-8") as f:
         json.dump(health_report, f, indent=2)
-
-    # Append status summary to public/llms.txt
-    llms_path = os.path.join(OUTPUT_DIR, "llms.txt")
-    if os.path.exists(llms_path):
-        with open(llms_path, "r", encoding="utf-8") as f:
-            content = f.read()
-
-        status_block = [
-            "",
-            "## Federated Wire Mesh Status",
-            f"> Audit Time: {now_iso}",
-            f"> Active Network Health: {health_report['summary']['healthy_wires']}/{health_report['summary']['total_wires']} Wires Operational ({health_report['summary']['availability_pct']}%)",
-            ""
-        ]
-        for w in health_report["results"]:
-            h = w["health"]
-            icon = "ONLINE" if h["status"] == "HEALTHY" else "OFFLINE"
-            status_block.append(f"- **{w['name']}** [{icon}]: {h.get('latency_ms', 0)}ms | Feed: `{w['primary_feed']}`")
-
-        with open(llms_path, "w", encoding="utf-8") as f:
-            f.write(content + "\n".join(status_block) + "\n")
 
 if __name__ == "__main__":
     run()
