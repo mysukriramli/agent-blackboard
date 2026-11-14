@@ -40,7 +40,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'public/'
+          path: '.' # Update this if compile.py outputs to a specific folder like 'docs/' or 'dist/'
 
       - name: Deploy to GitHub Pages
         id: deployment
